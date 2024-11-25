@@ -18,3 +18,10 @@ class Deck:
 
     def shuffle(self):
         shuffle(self.cards)
+
+    def draw_card(self):
+        if len(self.cards) > 0:
+            card = self.cards.pop()
+            return card
+        else:
+            return None
