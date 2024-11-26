@@ -4,6 +4,8 @@ from datetime import datetime
 class Leaderboard:
     def __init__(self, db_path='leaderboard.db'):
         self.db_path = db_path
+        self.display_no = 10
+        self.max_length = 20
         self.conn = sqlite3.connect(self.db_path)
         self.create_table()
 
@@ -25,7 +27,23 @@ class Leaderboard:
                 (date, name, score)
             )
 
+            count = self.conn.execute(
+                "SELECT COUNT(*) FROM leaderboard"
+            ).fetchone()
+
+            if int(count[0]) > self.max_length:
+                self.conn.execute("""
+                    DELETE FROM leaderboard 
+                    WHERE id NOT IN (
+                        SELECT id
+                        FROM leaderboard
+                        ORDER BY score DESC, date DESC
+                        LIMIT ?
+                    )
+                """, (self.display_no,))
+
     def get_top_scores(self, limit=10):
+        limit=self.display_no
         with self.conn:
             return self.conn.execute("""
                 SELECT date, name, score
