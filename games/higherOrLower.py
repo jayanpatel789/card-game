@@ -4,7 +4,7 @@ from cards.card import Card
 class HigherOrLower:
     def __init__(self):
         # Initialise the deck
-        self.deck = Deck()
+        self.deck = Deck(include_jokers=True)
         self.deck.shuffle()
         
         # Game variables
@@ -14,8 +14,8 @@ class HigherOrLower:
         self.streak = 0
     
     def display_state(self):
-        print(f"Score: {self.score}\nUnbanked points: {self.unbanked_points}\n" + 
-              f"Remaining lives: {self.lives}")
+        print(f"\nScore: {self.score}, Unbanked points: {self.unbanked_points}, " + 
+              f"Current streak: {self.streak}, Lives: {self.lives}")
     
     def draw_card(self):
         # Draw card from the deck
@@ -26,12 +26,10 @@ class HigherOrLower:
             return None
         # Else check if joker was drawn
         elif self.card.rank == 'Joker':
-            print("You just drew a Joker! +1 Lives")
             self.lives += 1
             self.draw_card()
         # Else return chosen card
         else:
-            print(f"The {self.card} was drawn.")
             return self.card
         
     def checkGuess(self, card0, card1, guess):
@@ -40,31 +38,40 @@ class HigherOrLower:
             rtn True if correct
             rtn False if incorrect
         """
-        if guess not in ['higher', 'lower']:
+        if guess not in ['h', 'l']:
             raise ValueError('Invalid guess value used.')
-        if guess == 'higher':
+        if guess == 'h':
             return card1 > card0
         else:
             return card1 < card0
         
     def incorrect(self):
         self.lives -= 1
-        if self.lives == 0:
-            self.gameOver()
-        else:
-            self.unbanked_points = 0
-            self.streak = 0
+        self.unbanked_points = 0
+        self.streak = 0
         return
     
     def correct(self):
-        self.streak += 1
         self.unbanked_points += 1 + self.streak*2
+        self.streak += 1
         return
     
     def bankPoints(self):
         self.score += self.unbanked_points
-        self.unbanked_points
+        self.unbanked_points = 0
         self.streak = 0
 
     def gameOver(self):
         print(f"Game Over! Final Score: {self.score}")
+
+
+def test():
+    game = HigherOrLower()
+    print(game.deck)
+
+    for i in range(len(game.deck)):
+        card = game.deck.draw_card()
+        print(f"{i}: {card}")
+
+if __name__ == "__main__":
+    test()
