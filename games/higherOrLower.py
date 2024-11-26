@@ -20,14 +20,15 @@ class HigherOrLower:
     def draw_card(self):
         # Draw card from the deck
         self.card = self.deck.draw_card()
-        # Check if card was actually taken
+        # If deck had been finished create new deck
         if not self.card:
-            print("Deck has been emptied.")
+            self.deck = Deck()
+            self.deck.shuffle()
             return None
         # Else check if joker was drawn
         elif self.card.rank == 'Joker':
             self.lives += 1
-            self.draw_card()
+            return self.card
         # Else return chosen card
         else:
             return self.card
@@ -46,15 +47,17 @@ class HigherOrLower:
             return card1 < card0
         
     def incorrect(self):
-        self.lives -= 1
+        points_lost = self.unbanked_points
         self.unbanked_points = 0
+        self.lives -= 1
         self.streak = 0
-        return
+        return points_lost
     
     def correct(self):
-        self.unbanked_points += 1 + self.streak*2
+        points = 1 + self.streak*2
+        self.unbanked_points += points
         self.streak += 1
-        return
+        return points
     
     def bankPoints(self):
         self.score += self.unbanked_points

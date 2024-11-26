@@ -61,40 +61,52 @@ class HigherOrLowerCLI:
         print(f"\nThe first card drawn was the {str(card0)}!")
 
         while self.game.lives > 0:
-
-            print(f"\nThe current card is the {str(card0)}.")
-
             while True:
+                print(f"\nThe current card is the {str(card0)}.")
                 action = input("\nGuess Higher (h), Lower (l), Bank (b), or display current status (d): ").lower()
                 if action not in ['h', 'l', 'b', 'd']:
                     print("Invalid input. Please enter 'h' for Higher, 'l' for Lower, or 'b' to Bank your points.")
                 elif action == 'b':
-                    print("You chose to Bank your points!")
+                    print("You chose to bank your points!")
                     self.game.bankPoints()
                     self.game.display_state()
                 elif action == 'd':
                     self.game.display_state()
                 elif action == 'h':
-                    print("You chose Higher!")
+                    print("You chose higher!")
                     break
                 elif action == 'l':
-                    print("You chose Lower!")
+                    print("You chose lower!")
                     break
             
-            print("\nDrawing card...")
-            time.sleep(1) # Wait for 1 second
-            print("...")
-            time.sleep(1) # Wait for 1 second
-            card1 = self.game.draw_card()
+            while True:
+                print("\nDrawing card...")
+                time.sleep(1) # Wait for 1 second
+                print("...")
+                time.sleep(1) # Wait for 1 second
+
+                card1 = self.game.draw_card()
+                if not card1:
+                    print("Deck finished. New deck being shuffled. No jokers this time!")
+                    print("Will now draw again...")
+                    time.sleep(1)
+                elif card1.rank == 'Joker':
+                    print("You just drew a Joker! +1 Life")
+                    print("Will now draw again...")
+                    time.sleep(1)
+                else:
+                    break
+
             print(f"The next card drawn is the {str(card1)}.")
+            print("\n...")
 
             guess = self.game.checkGuess(card0, card1, action)
             if guess:
-                print("\nYou were right!")
-                self.game.correct()
+                points_gained = self.game.correct()
+                print(f"You were right!\n+{points_gained} points, +1 streak")
             else:
-                print("\nTough luck! You were wrong")
-                self.game.incorrect()
+                points_lost = self.game.incorrect()
+                print(f"\nTough luck, you were wrong!\n{points_lost} unbanked points lost, -1 life")
 
             # Current state
             self.game.display_state()
@@ -102,7 +114,7 @@ class HigherOrLowerCLI:
             # Assign last drawn card to base card
             card0 = card1
 
-        print("You've run out of lives!")
+        print("Uh oh! You've run out of lives!")
         self.game.gameOver()
         self.play_again()
 

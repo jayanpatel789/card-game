@@ -4,9 +4,12 @@ class Card:
         self.suit = suit
 
     def __str__(self):
-        rank_names = {'1': "Ace", '11': "Jack", '12': "Queen", '13': "King"}
-        rank_str = rank_names.get(self.rank, self.rank)
-        return f"{rank_str} of {self.suit}"
+        if self.rank == 'Joker':
+            return f"{self.suit} {self.rank}"
+        else:
+            rank_names = {'1': "Ace", '11': "Jack", '12': "Queen", '13': "King"}
+            rank_str = rank_names.get(self.rank, self.rank)
+            return f"{rank_str} of {self.suit}"
     
     def __repr__(self):
         rank_names = {'1': "Ace", '11': "Jack", '12': "Queen", '13': "King"}
