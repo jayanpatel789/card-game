@@ -5,7 +5,6 @@ class Leaderboard:
     def __init__(self, db_path='leaderboard.db'):
         self.db_path = db_path
         self.display_no = 10
-        self.max_length = 20
         self.conn = sqlite3.connect(self.db_path)
         self.create_table()
 
@@ -20,27 +19,26 @@ class Leaderboard:
                 )
             """)
     
-    def add_score(self, date, name, score):
+    def add_score(self, name, score):
+        """Add a new score to the leaderboard."""
+        current_date = datetime.now()
+        date = current_date.strftime("%Y-%m-%d")
+
         with self.conn:
             self.conn.execute(
                 "INSERT INTO leaderboard (date, name, score) VALUES (?, ?, ?)",
                 (date, name, score)
             )
 
-            count = self.conn.execute(
-                "SELECT COUNT(*) FROM leaderboard"
-            ).fetchone()
+        # Determine the rank of the newly added score
+        position = self.conn.execute("""
+            SELECT COUNT(*)
+            FROM leaderboard
+            WHERE score > ?
+               OR (score = ? AND date > ?)
+        """, (score, score, date)).fetchone()[0] + 1  # Add 1 for 1-based ranking
 
-            if int(count[0]) > self.max_length:
-                self.conn.execute("""
-                    DELETE FROM leaderboard 
-                    WHERE id NOT IN (
-                        SELECT id
-                        FROM leaderboard
-                        ORDER BY score DESC, date DESC
-                        LIMIT ?
-                    )
-                """, (self.display_no,))
+        return position
 
     def get_top_scores(self, limit=10):
         limit=self.display_no
@@ -65,13 +63,10 @@ class Leaderboard:
 
 def test():
     leaderboard = Leaderboard(db_path="leaderboard/test_leaderboard.db")
-    # Get current date
-    current_date = datetime.now()
-    formatted_date = current_date.strftime("%Y-%m-%d")
 
     # Add scores
-    leaderboard.add_score(formatted_date, "Al", 25)
-    leaderboard.add_score(formatted_date, "Bob", 30)
+    leaderboard.add_score("Al", 25)
+    leaderboard.add_score("Bob", 30)
 
     # Display leaderboard
     leaderboard.display_leaderboard()

@@ -1,5 +1,4 @@
 from cards.deck import Deck
-from cards.card import Card
 
 class HigherOrLower:
     def __init__(self):
@@ -64,9 +63,9 @@ class HigherOrLower:
         self.unbanked_points = 0
         self.streak = 0
 
-    def gameOver(self):
-        print(f"Game Over! Final Score: {self.score}")
-
+    def gameOver(self, leaderboard, name):
+        position = leaderboard.add_score(name, self.score)
+        return self.score, position
 
 def test():
     game = HigherOrLower()

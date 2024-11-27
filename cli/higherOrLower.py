@@ -3,17 +3,21 @@ Command line interface running of the Higher or Lower game.
 """
 
 from games.higherOrLower import HigherOrLower
+from leaderboard.leaderboard import Leaderboard
 import time
 
 class HigherOrLowerCLI:
     def __init__(self):
         self.game = HigherOrLower()
+        self.leaderboard = Leaderboard(db_path='HoL_leaderboard.db')
 
     def startSequence(self):
         print("Welcome to Higher Or Lower: EXTREME!")
         rules = input("If you'd like to see the rules, enter y. If not, click enter. ")
         if rules.lower() == 'y':
             self.showRules()
+        self.name = input("\nWhat is your name? ")
+        print(f"\nCool! Nice to meet you {self.name}")
         
     def showRules(self):
         rules = """
@@ -115,7 +119,14 @@ class HigherOrLowerCLI:
             card0 = card1
 
         print("Uh oh! You've run out of lives!")
-        self.game.gameOver()
+        final_score, position = self.game.gameOver(self.leaderboard, self.name)
+        print(f"Final score: {final_score}")
+        if position == 1:
+            print("NEW HIGH SCORE!")
+        print(f"You have entered the leaderboard at {position}")
+        print()
+        self.leaderboard.display_leaderboard()
+        
         self.play_again()
 
 def main():
