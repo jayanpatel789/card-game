@@ -1,1 +1,9 @@
 higherOrLowerFlowchart.drawio
+
+leaderboard/test_leaderboard.db
+HoL_leaderboard.db
+
+cards/__pycache__
+cli/__pycache__
+games/__pycache__
+leaderboard/__pycache__
