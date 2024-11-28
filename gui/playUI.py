@@ -87,11 +87,9 @@ class PlayUI(QMainWindow):
             self.display(f"The card is: {self.card0}")
             self.guess_button_state()
         elif self.current_state == "DRAW_AFTER_GUESS":
-            pass
-        elif self.current_state == "CHECK_GUESS":
-            pass
+            self.draw_after_guess()
         elif self.current_state == "UPDATE_STATE":
-            pass
+            self.update_state()
         elif self.current_state == "GAME_OVER":
             pass
     
@@ -125,7 +123,28 @@ class PlayUI(QMainWindow):
             self.next_button_state()
             self.current_state = "WAIT_FOR_GUESS"
 
-
+    def draw_after_guess(self):
+        self.card1 = self.game.draw_card()
+        if not self.card1:
+            self.display("New deck. Click next to draw")
+            self.next_button_state()
+            self.current_state = "DRAW_AFTER_GUESS"
+            return
+        
+        if self.card1.rank == 'Joker':
+            self.display("You drew a Joker! +1 Life. Click next to draw again")
+            self.game.lives += 1
+            self.update_ui()
+            self.current_state = "DRAW_AFTER_GUESS"
+        else:
+            self.update_ui()
+            result = self.game.checkGuess(self.card0, self.card1, self.guess)
+            if result == True:
+                self.display(f"The next card is: {self.card1} - you were right!")
+                self.current_state = "UPDATE_STATE"
+            else:
+                self.display(f"The next card is: {self.card1} - tough luck!")
+                self.current_state = "UPDATE_STATE"
 
     def bank_points(self):
         self.game.bankPoints()
