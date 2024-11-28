@@ -19,25 +19,26 @@ class HigherOrLower:
         
     def getRules(self):
         rules = """
-        Welcome to the Higher or Lower Game!\n\n
-        Rules:\n
-        1. You start with 3 lives.\n
-        2. Your goal is to accumulate as many points as possible.\n
-        3. A card will be drawn, and you must guess if the next card will be HIGHER or LOWER.\n
-        - Ties do not count.\n
-        4. If your guess is correct:\n
-        - You earn points: 1 + streak bonus.\n
-        - Your streak increases, and you earn additional points for maintaining it.\n
-        5. If your guess is incorrect:\n
-        - You lose a life.\n
-        - All unbanked points are lost.\n
-        - Your streak resets to 0.\n
-        6. You can bank your unbanked points before guessing. Banked points are safe.\n
-        7. If you draw a Joker:\n
-        - You gain 1 extra life as a bonus!\n
-        8. The deck starts shuffled. If all cards are drawn, the deck reshuffles automatically.\n
-        9. The game ends when you lose all your lives.\n\n
-        Good luck and enjoy the game!\n
+        Welcome to the Higher or Lower Game!\n
+        Rules:
+        1. You start with 3 lives.
+        2. Your goal is to accumulate as high a score as possible.
+        3. A card will be drawn, and you must guess if the next card will be HIGHER or LOWER or BANK.
+        - Ties do not count.
+        3a. BANK - You can bank your unbanked points before guessing. This adds your unbanked points
+            to your score.
+        4. If your guess is correct:
+        - You earn points: 1 + streak * 2.
+        - Your streak increments, meaning you earn additional points for maintaining it.
+        5. If your guess is incorrect:
+        - You lose a life.
+        - All unbanked points are lost.
+        - Your streak resets to 0.
+        7. If you draw a Joker:
+        - You gain 1 extra life as a bonus!
+        8. The deck starts shuffled. If all cards are drawn, the deck reshuffles automatically.
+        9. The game ends when you lose all your lives.\n
+        Good luck and enjoy the game!
         """
         return rules
     
