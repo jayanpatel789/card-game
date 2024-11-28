@@ -33,13 +33,23 @@ class Card:
         if not isinstance(other, Card):
             return ValueError('Non Card object used in comparison.')
         return int(self.rank) == int(other.rank)
+    
+    def getImageName(self):
+        if self.rank == 'Joker':
+            return f"{self.suit}_{self.rank}.png".lower()
+        else:
+            rank_names = {'1': "Ace", '11': "Jack", '12': "Queen", '13': "King"}
+            rank_str = rank_names.get(self.rank, self.rank)
+            return f"{rank_str}_of_{self.suit}.png".lower()
 
 
 def test():
-    card0 = Card('4', 'Spades')
+    card0 = Card('Joker', 'Red')
     card1 = Card('6', 'Clubs')
 
-    print(card0 < card1)
+    imageName = card0.getImageName()
+
+    print(imageName)
 
     # if '9' > '10':
     #     print("True")
