@@ -49,7 +49,7 @@ margin-left: 10px</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="1">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="score_value">
         <property name="text">
          <string>0</string>
         </property>
@@ -86,14 +86,14 @@ margin-left: 10px</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="unbanked_points_value">
         <property name="text">
          <string>0</string>
         </property>
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="streak_value">
         <property name="text">
          <string>0</string>
         </property>
@@ -110,7 +110,7 @@ margin-left: 10px</string>
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QLabel" name="label_8">
+       <widget class="QLabel" name="lives_left_value">
         <property name="text">
          <string>3</string>
         </property>
@@ -137,7 +137,7 @@ margin-left: 10px</string>
     <property name="title">
      <string>Last card</string>
     </property>
-    <widget class="QLabel" name="label_12">
+    <widget class="QLabel" name="card_image">
      <property name="geometry">
       <rect>
        <x>4</x>
@@ -203,7 +203,7 @@ margin-left: 10px</string>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="3" column="0">
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="bank_button">
        <property name="font">
         <font>
          <family>Bodoni MT</family>
@@ -219,7 +219,7 @@ margin-left: 10px</string>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="lower_button">
        <property name="font">
         <font>
          <family>Bodoni MT</family>
@@ -248,7 +248,7 @@ margin-left: 10px</string>
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="higher_button">
        <property name="font">
         <font>
          <family>Bodoni MT</family>
@@ -278,12 +278,12 @@ margin-left: 10px</string>
      </item>
     </layout>
    </widget>
-   <widget class="QLabel" name="label_13">
+   <widget class="QLabel" name="display_line">
     <property name="geometry">
      <rect>
       <x>40</x>
       <y>180</y>
-      <width>1061</width>
+      <width>911</width>
       <height>60</height>
      </rect>
     </property>
@@ -300,6 +300,28 @@ margin-left: 10px</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="next_button">
+    <property name="geometry">
+     <rect>
+      <x>959</x>
+      <y>180</y>
+      <width>141</width>
+      <height>59</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Bodoni MT</family>
+      <pointsize>26</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 71, 0);</string>
+    </property>
+    <property name="text">
+     <string>Next</string>
     </property>
    </widget>
   </widget>
