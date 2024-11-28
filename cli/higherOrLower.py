@@ -12,7 +12,7 @@ class HigherOrLowerCLI:
         self.leaderboard = Leaderboard(db_path='HoL_leaderboard.db')
 
     def startSequence(self):
-        print("Welcome to Higher Or Lower: EXTREME!")
+        print("Welcome to Higher Or Lower: Point Rush!")
         rules = input("If you'd like to see the rules, enter y. If not, click enter. ")
         if rules.lower() == 'y':
             self.showRules()
