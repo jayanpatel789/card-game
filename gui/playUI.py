@@ -18,16 +18,23 @@ class PlayUI(QMainWindow):
         # Define stylesheets
         self.enabled_button_style = "background-color: darkgreen; color: white;"
         self.disabled_button_style = "background-color: gray; color: darkgray;"
+        self.enabled_label_style = "color: white"
+        self.disabled_label_style = "color: darkgray"
+
+        ## Assign state
+        self.current_state = "START_GAME"
+
+        # Connect buttons
+        self.higher_button.clicked.connect(lambda: self.action("h"))
+        self.lower_button.clicked.connect(lambda: self.action("l"))
+        self.bank_button.clicked.connect(lambda: self.action("b"))
+        self.next_button.clicked.connect(self.advance_state)
 
         # Widget initialisation
         self.display("Welcome! Click next to draw a card")
         self.next_button_state()
 
-        # Connect buttons
-        self.higher_button.clicked.connect(lambda: self.make_guess("h"))
-        self.lower_button.clicked.connect(lambda: self.make_guess("l"))
-        # self.bank_button.clicked.connect(self.bank_points)
-        self.next_button.clicked.connect(self.start_game)
+    ######## BUTTON STATE DEFINITIONS ###########
     
     def next_button_state(self):
         """Enable only next button."""
@@ -40,6 +47,9 @@ class PlayUI(QMainWindow):
         self.next_button.setEnabled(True)
         self.next_button.setStyleSheet(self.enabled_button_style)
 
+        self.higher_lower_label.setStyleSheet(self.disabled_label_style)
+        self.bank_label.setStyleSheet(self.disabled_label_style)
+
     def guess_button_state(self):
         """Enable only the guess and bank buttons."""
         self.higher_button.setEnabled(True)
@@ -50,6 +60,9 @@ class PlayUI(QMainWindow):
         self.bank_button.setStyleSheet(self.enabled_button_style)
         self.next_button.setEnabled(False)
         self.next_button.setStyleSheet(self.disabled_button_style)
+
+        self.higher_lower_label.setStyleSheet(self.enabled_label_style)
+        self.bank_label.setStyleSheet(self.enabled_label_style)
 
     def disable_all_buttons(self):
         """Disable all buttons."""
@@ -62,68 +75,64 @@ class PlayUI(QMainWindow):
         self.next_button.setEnabled(False)
         self.next_button.setStyleSheet(self.disabled_button_style)
 
+        self.higher_lower_label.setStyleSheet(self.disabled_label_style)
+        self.bank_label.setStyleSheet(self.disabled_label_style)
+
+    ############ GAME MANAGEMENT ##############
+    def advance_state(self):
+        """Control the next game state after next button clicked"""
+        if self.current_state == "START_GAME":
+            self.start_game()
+        elif self.current_state == "WAIT_FOR_GUESS":
+            self.display(f"The card is: {self.card0}")
+            self.guess_button_state()
+        elif self.current_state == "DRAW_AFTER_GUESS":
+            pass
+        elif self.current_state == "CHECK_GUESS":
+            pass
+        elif self.current_state == "UPDATE_STATE":
+            pass
+        elif self.current_state == "GAME_OVER":
+            pass
+    
     def start_game(self):
         """Start the game by drawing the first card."""
         self.game = HigherOrLower()  # Start new game instance
         self.card0 = self.game.draw_card()
 
         if self.card0:
-            self.display(f"The first card is: {self.card0}")
+            self.display(f"The card is: {self.card0}")
             self.update_ui()
             self.guess_button_state()
+            self.current_state = "WAIT_FOR_GUESS"
         else:
             self.display("Deck reshuffled. Please try again.")
 
-    def make_guess(self, guess):
-        """Handle the player's guess (higher or lower)."""
-        self.disable_all_buttons()
-        if not self.card0:
-            self.display("No card to compare! Draw the first card.")
-            return
-
-        if guess == 'h':
-            self.display("You chose higher!")
+    def action(self, signal):
+        if signal == 'h':
+            self.guess = signal
+            self.display("You chose higher! Click next to draw")
+            self.next_button_state()
+            self.current_state = "DRAW_AFTER_GUESS"
+        elif signal == 'l':
+            self.guess = signal
+            self.display("You chose lower! Click next to draw")
+            self.next_button_state()
+            self.current_state = "DRAW_AFTER_GUESS"
         else:
-            self.display("You chose lower!")
-        time.sleep(3)
+            self.bank_points()
+            self.display("You banked! Click next to continue")
+            self.next_button_state()
+            self.current_state = "WAIT_FOR_GUESS"
 
-        while True:
-            self.display("Drawing card...")
-            time.sleep(3)
-            self.display("...")
-            time.sleep(3)
 
-            card1 = self.game.draw_card()
-            if not card1:
-                self.display("Deck finished. New deck being shuffled. No jokers this time!")
-                time.sleep(3)
-                self.display("Will now draw again...")
-                time.sleep(3)
-            elif card1.rank == 'Joker':
-                self.display("You just drew a Joker! +1 Life")
-                time.sleep(3)
-                self.update_ui()
-                self.display("Will now draw again...")
-                time.sleep(3)
-            else:
-                break
-            
-            self.display(f"{str(self.card1)}!")
-            time.sleep(3)
 
-            guess = self.game.checkGuess(self.card0, card1, guess)
-            if guess:
-                points_gained = self.game.correct()
-                print(f"You were right!\n+{points_gained} points, +1 streak")
-            else:
-                points_lost = self.game.incorrect()
-                print(f"\nTough luck, you were wrong!\n{points_lost} unbanked points lost, -1 life")
-            self.update_ui()
-            # Assign last drawn card to base card
-            self.card0 = card1
-            time.sleep(3)
+    def bank_points(self):
+        self.game.bankPoints()
+        self.update_ui()
 
-        
+
+    ########## HELPER FUNCTIONS ##############
 
     def update_ui(self):
         """Update the UI based on the current game state."""

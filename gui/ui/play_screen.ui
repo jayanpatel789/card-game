@@ -235,11 +235,11 @@ margin-left: 10px</string>
       </widget>
      </item>
      <item row="0" column="0" colspan="2">
-      <widget class="QLabel" name="label_9">
+      <widget class="QLabel" name="higher_lower_label">
        <property name="font">
         <font>
          <family>Bodoni MT</family>
-         <pointsize>14</pointsize>
+         <pointsize>18</pointsize>
         </font>
        </property>
        <property name="text">
@@ -264,11 +264,11 @@ margin-left: 10px</string>
       </widget>
      </item>
      <item row="2" column="0" colspan="2">
-      <widget class="QLabel" name="label_10">
+      <widget class="QLabel" name="bank_label">
        <property name="font">
         <font>
          <family>Bodoni MT</family>
-         <pointsize>14</pointsize>
+         <pointsize>18</pointsize>
         </font>
        </property>
        <property name="text">
