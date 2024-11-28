@@ -20,30 +20,7 @@ class HigherOrLowerCLI:
         print(f"\nCool! Nice to meet you {self.name}")
         
     def showRules(self):
-        rules = """
-        Welcome to the Higher or Lower Game!
-
-        Rules:
-        1. You start with 3 lives.
-        2. Your goal is to accumulate as many points as possible.
-        3. A card will be drawn, and you must guess if the next card will be HIGHER or LOWER.
-        - Ties do not count.
-        4. If your guess is correct:
-        - You earn points: 1 + streak bonus.
-        - Your streak increases, and you earn additional points for maintaining it.
-        5. If your guess is incorrect:
-        - You lose a life.
-        - All unbanked points are lost.
-        - Your streak resets to 0.
-        6. You can bank your unbanked points before guessing. Banked points are safe.
-        7. If you draw a Joker:
-        - You gain 1 extra life as a bonus!
-        8. The deck starts shuffled. If all cards are drawn, the deck reshuffles automatically.
-        9. The game ends when you lose all your lives.
-
-        Good luck and enjoy the game!
-        """
-
+        rules = self.game.getRules()
         print(rules)
 
     def play_again(self):

@@ -1,5 +1,6 @@
 from cards.deck import Deck
 
+
 class HigherOrLower:
     def __init__(self):
         # Initialise the deck
@@ -15,6 +16,30 @@ class HigherOrLower:
     def display_state(self):
         print(f"\nScore: {self.score}, Unbanked points: {self.unbanked_points}, " + 
               f"Current streak: {self.streak}, Lives: {self.lives}")
+        
+    def getRules(self):
+        rules = """
+        Welcome to the Higher or Lower Game!\n\n
+        Rules:\n
+        1. You start with 3 lives.\n
+        2. Your goal is to accumulate as many points as possible.\n
+        3. A card will be drawn, and you must guess if the next card will be HIGHER or LOWER.\n
+        - Ties do not count.\n
+        4. If your guess is correct:\n
+        - You earn points: 1 + streak bonus.\n
+        - Your streak increases, and you earn additional points for maintaining it.\n
+        5. If your guess is incorrect:\n
+        - You lose a life.\n
+        - All unbanked points are lost.\n
+        - Your streak resets to 0.\n
+        6. You can bank your unbanked points before guessing. Banked points are safe.\n
+        7. If you draw a Joker:\n
+        - You gain 1 extra life as a bonus!\n
+        8. The deck starts shuffled. If all cards are drawn, the deck reshuffles automatically.\n
+        9. The game ends when you lose all your lives.\n\n
+        Good luck and enjoy the game!\n
+        """
+        return rules
     
     def draw_card(self):
         # Draw card from the deck
