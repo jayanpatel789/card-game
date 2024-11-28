@@ -24,7 +24,7 @@ color: white</string>
       <x>10</x>
       <y>0</y>
       <width>1101</width>
-      <height>201</height>
+      <height>151</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -44,7 +44,7 @@ margin-left: 10px</string>
        <x>20</x>
        <y>10</y>
        <width>1071</width>
-       <height>181</height>
+       <height>131</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
@@ -122,8 +122,8 @@ margin-left: 10px</string>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>240</y>
+      <x>330</x>
+      <y>260</y>
       <width>211</width>
       <height>341</height>
      </rect>
@@ -157,8 +157,8 @@ margin-left: 10px</string>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>240</y>
+      <x>40</x>
+      <y>260</y>
       <width>211</width>
       <height>341</height>
      </rect>
@@ -185,7 +185,7 @@ margin-left: 10px</string>
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>card-images/back_of_card.png</pixmap>
+      <pixmap>../card-images/back_of_card.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -195,8 +195,8 @@ margin-left: 10px</string>
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>260</y>
+      <x>580</x>
+      <y>280</y>
       <width>509</width>
       <height>261</height>
      </rect>
@@ -277,6 +277,30 @@ margin-left: 10px</string>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>180</y>
+      <width>1061</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Bodoni MT</family>
+      <pointsize>22</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>What do you want to do next?</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
