@@ -149,7 +149,7 @@ class PlayUI(QMainWindow):
         """Draw the card after a guess and check the answer"""
         self.card1 = self.game.draw_card()
         if not self.card1:
-            self.display("New deck. Click next to draw")
+            self.display("New deck - no jokers this time! Click next to draw")
             self.next_button_state()
             self.current_state = "DRAW_AFTER_GUESS"
             return
@@ -194,7 +194,7 @@ class PlayUI(QMainWindow):
         if ok and name.strip():  # Ensure the player entered a valid name
             final_score, position = self.game.gameOver(name.strip())
             if position == 1:
-                self.display(f"NEW HIGH SCORE! Final Score: {final_score}. Leaderboard Position: {position}")
+                self.display(f"NEW HIGH SCORE! Final Score: {final_score}")
             else:
                 self.display(f"Game Over! Final Score: {final_score}. Leaderboard Position: {position}")
 
