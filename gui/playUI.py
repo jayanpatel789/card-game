@@ -1,6 +1,5 @@
 from games.higherOrLower import HigherOrLower
-from leaderboard.leaderboard import Leaderboard
-from PyQt5.QtWidgets import QMainWindow, QApplication, QStackedWidget, QDialog, QVBoxLayout, QLabel
+from PyQt5.QtWidgets import QMainWindow, QInputDialog, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.uic import loadUi
 import sys
@@ -21,7 +20,8 @@ class PlayUI(QMainWindow):
         self.enabled_label_style = "color: white"
         self.disabled_label_style = "color: darkgray"
 
-        ## Assign state
+        # Initialise game and state
+        self.game = HigherOrLower()  # Start new game instance
         self.current_state = "START_GAME"
 
         # Connect buttons
@@ -91,20 +91,22 @@ class PlayUI(QMainWindow):
         elif self.current_state == "UPDATE_STATE":
             self.update_state()
         elif self.current_state == "GAME_OVER":
-            pass
+            self.game_over()
     
     def start_game(self):
         """Start the game by drawing the first card."""
-        self.game = HigherOrLower()  # Start new game instance
         self.card0 = self.game.draw_card()
 
-        if self.card0:
+        if self.card0.rank == 'Joker':
+            self.display("You drew a Joker! +1 Life. Click next to draw again")
+            self.update_ui()
+            self.next_button_state()
+            self.current_state = "START_GAME"
+        else:
             self.display(f"The card is: {self.card0}")
             self.update_ui()
             self.guess_button_state()
             self.current_state = "WAIT_FOR_GUESS"
-        else:
-            self.display("Deck reshuffled. Please try again.")
 
     def action(self, signal):
         if signal == 'h':
@@ -118,12 +120,14 @@ class PlayUI(QMainWindow):
             self.next_button_state()
             self.current_state = "DRAW_AFTER_GUESS"
         else:
-            self.bank_points()
+            self.game.bankPoints()
+            self.update_ui()
             self.display("You banked! Click next to continue")
             self.next_button_state()
             self.current_state = "WAIT_FOR_GUESS"
 
     def draw_after_guess(self):
+        """Draw the card after a guess and check the answer"""
         self.card1 = self.game.draw_card()
         if not self.card1:
             self.display("New deck. Click next to draw")
@@ -133,7 +137,6 @@ class PlayUI(QMainWindow):
         
         if self.card1.rank == 'Joker':
             self.display("You drew a Joker! +1 Life. Click next to draw again")
-            self.game.lives += 1
             self.update_ui()
             self.current_state = "DRAW_AFTER_GUESS"
         else:
@@ -146,9 +149,44 @@ class PlayUI(QMainWindow):
                 self.display(f"The next card is: {self.card1} - tough luck!")
                 self.current_state = "UPDATE_STATE"
 
-    def bank_points(self):
-        self.game.bankPoints()
+    def update_state(self):
+        """Update the game state depending on result of guess"""
+        if self.game.checkGuess(self.card0, self.card1, self.guess):
+            points_gained = self.game.correct()
+            self.display(f"You earned {points_gained} points! Streak +1")
+        else:
+            points_lost = self.game.incorrect()
+            self.display(f"Lost {points_lost} unbanked points and 1 life.")
         self.update_ui()
+
+        # Check if the game is over
+        if self.game.lives <= 0:
+            self.current_state = "GAME_OVER"
+        else:
+            self.card0 = self.card1
+            self.current_state = "WAIT_FOR_GUESS"
+
+    def game_over(self):
+        """Handle the game-over state."""
+        self.display("Game Over! Calculating final score...")
+
+        # Prompt the user for their name
+        name, ok = QInputDialog.getText(self, "Game Over", "Enter your name:")
+        if ok and name.strip():  # Ensure the player entered a valid name
+            final_score, position = self.game.gameOver(name.strip())
+            if position == 1:
+                self.display(f"NEW HIGH SCORE! Final Score: {final_score}. Leaderboard Position: {position}")
+            else:
+                self.display(f"Game Over! Final Score: {final_score}. Leaderboard Position: {position}")
+
+            # Notify the player
+            QMessageBox.information(self, "Score Saved", f"Your score has been saved as '{name.strip()}'!")
+        else:
+            self.display(f"Game Over! Final Score: {self.game.score}. Score not saved.")
+
+        # Disable all buttons to prevent further interaction
+        self.disable_all_buttons()
+
 
 
     ########## HELPER FUNCTIONS ##############

@@ -1,4 +1,5 @@
 from cards.deck import Deck
+from leaderboard.leaderboard import Leaderboard
 
 
 class HigherOrLower:
@@ -12,6 +13,9 @@ class HigherOrLower:
         self.score = 0
         self.unbanked_points = 0
         self.streak = 0
+
+        # Leaderboard
+        self.leaderboard = Leaderboard(db_path="HoL_leaderboard.db")
     
     def display_state(self):
         print(f"\nScore: {self.score}, Unbanked points: {self.unbanked_points}, " + 
@@ -89,8 +93,8 @@ class HigherOrLower:
         self.unbanked_points = 0
         self.streak = 0
 
-    def gameOver(self, leaderboard, name):
-        position = leaderboard.add_score(name, self.score)
+    def gameOver(self, name):
+        position = self.leaderboard.add_score(name, self.score)
         return self.score, position
 
 def test():
