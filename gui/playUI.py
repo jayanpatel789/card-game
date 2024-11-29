@@ -20,9 +20,14 @@ class PlayUI(QMainWindow):
         self.disabled_label_style = "color: darkgray"
 
         # Initialise game and state
-        self.game = HigherOrLower()  # Start new game instance
-        self.current_state = "START_GAME"
         self.leaderboard = leaderboard
+        self.game = HigherOrLower(self.leaderboard)  # Start new game instance
+        self.current_state = "START_GAME"
+
+        self.score_value.setText(str(self.game.score))
+        self.streak_value.setText(str(self.game.streak))
+        self.unbanked_points_value.setText(str(self.game.unbanked_points)) 
+        self.lives_left_value.setText(str(self.game.STARTING_LIVES))
 
         # Connect buttons
         self.restart_button.clicked.connect(self.restart_game)
@@ -86,10 +91,13 @@ class PlayUI(QMainWindow):
     ######## MENU FUNCTIONS ###########
     def restart_game(self):
         """Restart the game by resetting the state."""
-        self.game = HigherOrLower()  # Reset the game instance
+        self.game = HigherOrLower(self.leaderboard)  # Reset the game instance
         self.update_ui(no_card=True)  # Update the UI with the new game state
         self.display("Game restarted! Click next to draw")
         self.next_button_state()
+        # Revert button names
+        self.home_button.setText("Quit")
+        self.restart_button.setText("Restart")
         self.current_state = "START_GAME"
     
     def quit_to_home(self):
@@ -104,12 +112,11 @@ class PlayUI(QMainWindow):
         # Create a QDialog
         dialog = QDialog(self)
         dialog.setWindowTitle("Game Rules")
-        dialog.setGeometry(200, 200, 800, 400)  # Set the size of the dialog
+        dialog.setGeometry(100, 100, 400, 600)  # Set the size of the dialog
 
         # Add a QLabel to display the rules
         layout = QVBoxLayout(dialog)
         label = QLabel(rules, dialog)
-        label.setWordWrap(True)  # Enable text wrapping
         layout.addWidget(label)
 
         # Apply a stylesheet to customize the font
@@ -199,7 +206,7 @@ class PlayUI(QMainWindow):
         """Update the game state depending on result of guess"""
         if self.game.checkGuess(self.card0, self.card1, self.guess):
             points_gained = self.game.correct()
-            self.display(f"You earned {points_gained} points! Streak +1")
+            self.display(f"+{points_gained} points! ({self.game.BASE_SCORE} + {(self.game.streak-1)*self.game.STREAK_MULTIPLIER} streak bonus)")
         else:
             points_lost = self.game.incorrect()
             self.display(f"Lost {points_lost} unbanked points and 1 life.")
@@ -232,7 +239,9 @@ class PlayUI(QMainWindow):
 
         # Disable all buttons to prevent further interaction
         self.disable_all_buttons()
-        self.home_button.setText("Home") # For clarity at end of game
+        # For clarity at end of game
+        self.home_button.setText("Home")
+        self.restart_button.setText("Play Again")
 
 
     ########## HELPER FUNCTIONS ##############

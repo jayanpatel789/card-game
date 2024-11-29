@@ -22,7 +22,7 @@ class AppWindow(QMainWindow):
         self.setCentralWidget(self.stack)
 
         # Initialise leaderboard
-        self.leaderboard = Leaderboard(db_path="HoL_leaderboard.db")
+        self.leaderboard = Leaderboard(db_path="leaderboard.db")
         # Create instances of the screens
         self.homeUI = HomeUI(self.leaderboard)
         self.playUI = PlayUI(self.leaderboard)

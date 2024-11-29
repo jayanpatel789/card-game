@@ -3,26 +3,34 @@ from leaderboard.leaderboard import Leaderboard
 
 
 class HigherOrLower:
-    def __init__(self):
+    def __init__(self, leaderboard=None):
         # Initialise the deck
         self.deck = Deck(include_jokers=True)
         self.deck.shuffle()
+
+        # GAME constants
+        self.STARTING_LIVES = 3
+        self.BASE_SCORE = 2
+        self.STREAK_MULTIPLIER = 2
         
         # Game variables
-        self.lives = 3
+        self.lives = self.STARTING_LIVES
         self.score = 0
         self.unbanked_points = 0
         self.streak = 0
 
         # Leaderboard
-        self.leaderboard = Leaderboard(db_path="HoL_leaderboard.db")
+        if not leaderboard:
+            leaderboard = Leaderboard(db_path='leaderboard.db')
+        else:
+            self.leaderboard = leaderboard
     
     def display_state(self):
         print(f"\nScore: {self.score}, Unbanked points: {self.unbanked_points}, " + 
               f"Current streak: {self.streak}, Lives: {self.lives}")
         
     def getRules(self):
-        rules = """
+        rules = f"""
         Welcome to Higher or Lower: Point Rush!
         Try to get the highest score possible!
 
@@ -32,7 +40,7 @@ class HigherOrLower:
         You want the highest SCORE!
 
         Rules:
-        1. You start with 3 lives.
+        1. You start with {self.STARTING_LIVES} lives.
         2. After a card is drawn, you have three options:
            - Click HIGHER if you think the next card will be higher.
            - Click LOWER if you think the next card will be lower.
@@ -42,7 +50,7 @@ class HigherOrLower:
            - Banking adds unbanked points to your total score.
            - Banking resets your streak to 0.
         4. If your guess is correct:
-           - Earn unbanked points: 3 + (streak * 2).
+           - Earn unbanked points: {self.BASE_SCORE} + (streak * {self.STREAK_MULTIPLIER}).
            - Your streak increases by 1.
         5. If your guess is incorrect:
            - Lose 1 life.
@@ -98,7 +106,7 @@ class HigherOrLower:
         return points_lost
     
     def correct(self):
-        points = 3 + self.streak*2
+        points = self.BASE_SCORE + self.streak*self.STREAK_MULTIPLIER
         self.unbanked_points += points
         self.streak += 1
         return points

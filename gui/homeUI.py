@@ -26,18 +26,17 @@ class HomeUI(QMainWindow):
     def showRules(self):
         # Retrieve the rules from the game instance
         # Initialise game for rules
-        self.game = HigherOrLower()
+        self.game = HigherOrLower(self.leaderboard)
         rules = self.game.getRules()
 
         # Create a QDialog
         dialog = QDialog(self)
         dialog.setWindowTitle("Game Rules")
-        dialog.setGeometry(200, 200, 800, 400)  # Set the size of the dialog
+        dialog.setGeometry(100, 100, 400, 600)  # Set the size of the dialog
 
         # Add a QLabel to display the rules
         layout = QVBoxLayout(dialog)
         label = QLabel(rules, dialog)
-        label.setWordWrap(True)  # Enable text wrapping
         layout.addWidget(label)
 
         # Apply a stylesheet to customize the font

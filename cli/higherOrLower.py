@@ -3,13 +3,11 @@ Command line interface running of the Higher or Lower game.
 """
 
 from games.higherOrLower import HigherOrLower
-from leaderboard.leaderboard import Leaderboard
 import time
 
 class HigherOrLowerCLI:
     def __init__(self):
         self.game = HigherOrLower()
-        self.leaderboard = Leaderboard(db_path='HoL_leaderboard.db')
 
     def startSequence(self):
         print("Welcome to Higher Or Lower: Point Rush!")
@@ -96,7 +94,7 @@ class HigherOrLowerCLI:
             card0 = card1
 
         print("Uh oh! You've run out of lives!")
-        final_score, position = self.game.gameOver(self.leaderboard, self.name)
+        final_score, position = self.game.gameOver(self.name)
         print(f"Final score: {final_score}")
         if position == 1:
             print("NEW HIGH SCORE!")
