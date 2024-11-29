@@ -69,7 +69,7 @@
     </property>
     <property name="text">
      <string>HIGHER OR LOWER:
-POINT RUSH</string>
+POINT RUSH!</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
