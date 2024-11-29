@@ -1,13 +1,12 @@
 from games.higherOrLower import HigherOrLower
-from PyQt5.QtWidgets import QMainWindow, QInputDialog, QMessageBox
-from PyQt5.QtGui import QIcon, QPixmap
+from gui.leaderboardDialog import LeaderboardDialog
+from PyQt5.QtWidgets import QMainWindow, QInputDialog, QMessageBox, QDialog, QVBoxLayout, QLabel
+from PyQt5.QtGui import QPixmap
 from PyQt5.uic import loadUi
-import sys
 import os
-import time
 
 class PlayUI(QMainWindow):
-    def __init__(self):
+    def __init__(self, leaderboard):
         super(PlayUI, self).__init__()
         self.dirpath = os.path.dirname(os.path.abspath(__file__))
         UIpath = os.path.join(self.dirpath, r"ui\play_screen.ui")
@@ -23,10 +22,13 @@ class PlayUI(QMainWindow):
         # Initialise game and state
         self.game = HigherOrLower()  # Start new game instance
         self.current_state = "START_GAME"
+        self.leaderboard = leaderboard
 
         # Connect buttons
         self.restart_button.clicked.connect(self.restart_game)
         self.home_button.clicked.connect(self.quit_to_home)
+        self.rules_button.clicked.connect(self.showRules)
+        self.leaderboard_button.clicked.connect(self.showLeaderboard)
 
         self.higher_button.clicked.connect(lambda: self.action("h"))
         self.lower_button.clicked.connect(lambda: self.action("l"))
@@ -93,6 +95,31 @@ class PlayUI(QMainWindow):
     def quit_to_home(self):
         if hasattr(self, 'return_to_home') and self.return_to_home:
             self.return_to_home()  # Call the callback to return to home
+
+    def showRules(self):
+        # Retrieve the rules from the game instance
+        # Initialise game for rules
+        rules = self.game.getRules()
+
+        # Create a QDialog
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Game Rules")
+        dialog.setGeometry(200, 200, 800, 400)  # Set the size of the dialog
+
+        # Add a QLabel to display the rules
+        layout = QVBoxLayout(dialog)
+        label = QLabel(rules, dialog)
+        label.setWordWrap(True)  # Enable text wrapping
+        layout.addWidget(label)
+
+        # Apply a stylesheet to customize the font
+        label.setStyleSheet("color: white; font-size: 20px; font-family: Bodoni MT;")
+
+        dialog.exec_()  # Show the dialog
+
+    def showLeaderboard(self):
+        dialog = LeaderboardDialog(self.leaderboard)
+        dialog.exec_()
     
     ############ GAME MANAGEMENT ##############
     def advance_state(self):

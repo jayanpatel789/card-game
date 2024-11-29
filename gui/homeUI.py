@@ -1,20 +1,27 @@
 from games.higherOrLower import HigherOrLower
-from PyQt5.QtWidgets import QMainWindow, QApplication, QStackedWidget, QDialog, QVBoxLayout, QLabel
-from PyQt5.QtGui import QIcon
+from gui.leaderboardDialog import LeaderboardDialog
+from PyQt5.QtWidgets import QMainWindow, QDialog, QVBoxLayout, QLabel
 from PyQt5.uic import loadUi
 import sys
 import os
 
 class HomeUI(QMainWindow):
-    def __init__(self):
+    def __init__(self, leaderboard):
         super(HomeUI, self).__init__()
         dirpath = os.path.dirname(os.path.abspath(__file__))
         UIpath = os.path.join(dirpath, r"ui\home_screen.ui")
         print(UIpath)
         loadUi(UIpath, self)
 
+        # Set the window title
+        self.setWindowTitle("Higher or Lower: Point Rush")
+
+        # Initialise leaderboard
+        self.leaderboard = leaderboard
+
         # Connect buttons for navigation
         self.rulesButton.clicked.connect(self.showRules)
+        self.leaderboardButton.clicked.connect(self.showLeaderboard)
 
     def showRules(self):
         # Retrieve the rules from the game instance
@@ -34,6 +41,10 @@ class HomeUI(QMainWindow):
         layout.addWidget(label)
 
         # Apply a stylesheet to customize the font
-        label.setStyleSheet("color: white; font-size: 16px; font-family: Arial;")
+        label.setStyleSheet("color: white; font-size: 20px; font-family: Bodoni MT;")
 
         dialog.exec_()  # Show the dialog
+
+    def showLeaderboard(self):
+        dialog = LeaderboardDialog(self.leaderboard)
+        dialog.exec_()

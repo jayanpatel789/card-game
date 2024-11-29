@@ -1,6 +1,7 @@
 from gui.homeUI import HomeUI
 from gui.playUI import PlayUI
-from PyQt5.QtWidgets import QMainWindow, QApplication, QStackedWidget, QDialog, QVBoxLayout, QLabel
+from leaderboard.leaderboard import Leaderboard
+from PyQt5.QtWidgets import QMainWindow, QApplication, QStackedWidget
 from PyQt5.QtGui import QIcon
 from PyQt5.uic import loadUi
 import sys
@@ -19,9 +20,12 @@ class AppWindow(QMainWindow):
         # Create QStackedWidget to hold different screens
         self.stack = QStackedWidget()
         self.setCentralWidget(self.stack)
+
+        # Initialise leaderboard
+        self.leaderboard = Leaderboard(db_path="HoL_leaderboard.db")
         # Create instances of the screens
-        self.homeUI = HomeUI()
-        self.playUI = PlayUI()
+        self.homeUI = HomeUI(self.leaderboard)
+        self.playUI = PlayUI(self.leaderboard)
         # Add screens to the QStackedWidget
         self.stack.addWidget(self.homeUI)  # Index 0
         self.stack.addWidget(self.playUI)  # Index 1
@@ -36,10 +40,12 @@ class AppWindow(QMainWindow):
     def showHomeUI(self):
         """Show the HomeUI."""
         self.stack.setCurrentIndex(0)
+        self.setWindowTitle("Higher or Lower: Point Rush")
 
     def showPlayUI(self):
         """Show the PlayUI."""
         self.stack.setCurrentWidget(self.playUI)
+        self.setWindowTitle("Higher or Lower: Point Rush")
 
     def quit_game(self):
         """Return to the HomeUI from PlayUI and reinitialise PlayUI."""
@@ -47,7 +53,7 @@ class AppWindow(QMainWindow):
         self.stack.setCurrentWidget(self.homeUI)
 
         # Reinitialize PlayUI
-        self.playUI = PlayUI()
+        self.playUI = PlayUI(self.leaderboard)
         self.stack.addWidget(self.playUI)  # Add the new PlayUI to the stack
         self.playUI.home_button.clicked.connect(self.quit_game)
 
