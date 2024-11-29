@@ -25,6 +25,9 @@ class PlayUI(QMainWindow):
         self.current_state = "START_GAME"
 
         # Connect buttons
+        self.restart_button.clicked.connect(self.restart_game)
+        self.home_button.clicked.connect(self.quit_to_home)
+
         self.higher_button.clicked.connect(lambda: self.action("h"))
         self.lower_button.clicked.connect(lambda: self.action("l"))
         self.bank_button.clicked.connect(lambda: self.action("b"))
@@ -78,6 +81,19 @@ class PlayUI(QMainWindow):
         self.higher_lower_label.setStyleSheet(self.disabled_label_style)
         self.bank_label.setStyleSheet(self.disabled_label_style)
 
+    ######## MENU FUNCTIONS ###########
+    def restart_game(self):
+        """Restart the game by resetting the state."""
+        self.game = HigherOrLower()  # Reset the game instance
+        self.update_ui(no_card=True)  # Update the UI with the new game state
+        self.display("Game restarted! Click next to draw")
+        self.next_button_state()
+        self.current_state = "START_GAME"
+    
+    def quit_to_home(self):
+        if hasattr(self, 'return_to_home') and self.return_to_home:
+            self.return_to_home()  # Call the callback to return to home
+    
     ############ GAME MANAGEMENT ##############
     def advance_state(self):
         """Control the next game state after next button clicked"""
@@ -120,9 +136,12 @@ class PlayUI(QMainWindow):
             self.next_button_state()
             self.current_state = "DRAW_AFTER_GUESS"
         else:
-            self.game.bankPoints()
-            self.update_ui()
-            self.display("You banked! Click next to continue")
+            if self.game.unbanked_points > 0:
+                self.game.bankPoints()
+                self.update_ui()
+                self.display("You banked! Click next to continue")
+            else:
+                self.display("No points to bank! Click next to continue")
             self.next_button_state()
             self.current_state = "WAIT_FOR_GUESS"
 
@@ -186,12 +205,12 @@ class PlayUI(QMainWindow):
 
         # Disable all buttons to prevent further interaction
         self.disable_all_buttons()
-
+        self.home_button.setText("Home") # For clarity at end of game
 
 
     ########## HELPER FUNCTIONS ##############
 
-    def update_ui(self):
+    def update_ui(self, no_card=False):
         """Update the UI based on the current game state."""
         self.score_value.setText(str(self.game.score))
         self.unbanked_points_value.setText(str(self.game.unbanked_points))
@@ -199,9 +218,12 @@ class PlayUI(QMainWindow):
         self.lives_left_value.setText(str(self.game.lives))
 
         # Update the displayed card
-        if self.game.card:
-            card_image_path = self.get_card_image_path(self.game.card)
-            self.card_image.setPixmap(QPixmap(card_image_path))
+        if not no_card:
+            if self.game.card:
+                card_image_path = self.get_card_image_path(self.game.card)
+                self.card_image.setPixmap(QPixmap(card_image_path))
+            else:
+                self.card_image.clear()
         else:
             self.card_image.clear()
 

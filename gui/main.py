@@ -28,17 +28,28 @@ class AppWindow(QMainWindow):
 
         # Initialise buttons that change windows
         self.homeUI.playButton.clicked.connect(self.showPlayUI)
+        self.playUI.home_button.clicked.connect(self.quit_game)
 
         # Show the initial screen
         self.showHomeUI()
 
     def showHomeUI(self):
-        # Set current index to HomeUI (index 0)
+        """Show the HomeUI."""
         self.stack.setCurrentIndex(0)
 
     def showPlayUI(self):
-        # Set current index to PlayUI (index 1)
-        self.stack.setCurrentIndex(1)
+        """Show the PlayUI."""
+        self.stack.setCurrentWidget(self.playUI)
+
+    def quit_game(self):
+        """Return to the HomeUI from PlayUI and reinitialise PlayUI."""
+        # Switch to the HomeUI
+        self.stack.setCurrentWidget(self.homeUI)
+
+        # Reinitialize PlayUI
+        self.playUI = PlayUI()
+        self.stack.addWidget(self.playUI)  # Add the new PlayUI to the stack
+        self.playUI.home_button.clicked.connect(self.quit_game)
 
 
 if __name__ == "__main__":
