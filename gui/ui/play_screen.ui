@@ -23,13 +23,13 @@ color: white</string>
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>1101</width>
+      <width>1081</width>
       <height>151</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">font: 22pt &quot;Bodoni MT&quot;;
-color: white;
+color: yellow;
 margin-left: 10px</string>
     </property>
     <property name="frameShape">
@@ -134,8 +134,11 @@ margin-left: 10px</string>
       <pointsize>20</pointsize>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: yellow</string>
+    </property>
     <property name="title">
-     <string>Last card</string>
+     <string>Card</string>
     </property>
     <widget class="QLabel" name="card_image">
      <property name="geometry">
@@ -168,6 +171,9 @@ margin-left: 10px</string>
       <family>Bodoni MT Condensed</family>
       <pointsize>20</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: yellow</string>
     </property>
     <property name="title">
      <string>Deck</string>
@@ -337,11 +343,6 @@ margin-left: 10px</string>
    <property name="styleSheet">
     <string notr="true">color: white</string>
    </property>
-   <widget class="QMenu" name="menuHome">
-    <property name="title">
-     <string>Home</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuRules">
     <property name="title">
      <string>Rules</string>
@@ -352,9 +353,20 @@ margin-left: 10px</string>
      <string>Leaderboard</string>
     </property>
    </widget>
-   <addaction name="menuHome"/>
+   <widget class="QMenu" name="menuQuit">
+    <property name="title">
+     <string>Quit</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuRestart">
+    <property name="title">
+     <string>Restart</string>
+    </property>
+   </widget>
    <addaction name="menuRules"/>
    <addaction name="menuLeaderboard"/>
+   <addaction name="menuRestart"/>
+   <addaction name="menuQuit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

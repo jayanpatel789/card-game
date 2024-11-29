@@ -37,6 +37,9 @@
       <bold>false</bold>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: maroon</string>
+    </property>
     <property name="text">
      <string>Welcome to</string>
     </property>
@@ -62,7 +65,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: darkred</string>
+     <string notr="true">color: yellow</string>
     </property>
     <property name="text">
      <string>HIGHER OR LOWER:
@@ -75,9 +78,9 @@ POINT RUSH</string>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>20</x>
       <y>490</y>
-      <width>1061</width>
+      <width>1071</width>
       <height>80</height>
      </rect>
     </property>
