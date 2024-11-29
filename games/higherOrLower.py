@@ -23,25 +23,40 @@ class HigherOrLower:
         
     def getRules(self):
         rules = """
-        Welcome to the Higher or Lower Game!\n
+        Welcome to Higher or Lower: Point Rush!
+        Try to get the highest score possible!
+
+        Key Terms:
+        - Score (a.k.a. banked points): Points you have safely saved. These cannot be lost.
+        - Unbanked Points: Points you earn from correct guesses. These are at risk until you bank them.
+        You want the highest SCORE!
+
         Rules:
         1. You start with 3 lives.
-        2. Your goal is to accumulate as high a score as possible.
-        3. A card will be drawn, and you must guess if the next card will be HIGHER or LOWER or BANK.
-        - Ties do not count.
-        3a. BANK - You can bank your unbanked points before guessing. This adds your unbanked points
-            to your score.
+        2. After a card is drawn, you have three options:
+           - Click HIGHER if you think the next card will be higher.
+           - Click LOWER if you think the next card will be lower.
+           - Click BANK to add your unbanked points to your total score and secure them.
+           - For higher and lower, ties do not count.
+        3. BANK:
+           - Banking adds unbanked points to your total score.
+           - Banking resets your streak to 0.
         4. If your guess is correct:
-        - You earn points: 1 + streak * 2.
-        - Your streak increments, meaning you earn additional points for maintaining it.
+           - Earn unbanked points: 3 + (streak * 2).
+           - Your streak increases by 1.
         5. If your guess is incorrect:
-        - You lose a life.
-        - All unbanked points are lost.
-        - Your streak resets to 0.
-        7. If you draw a Joker:
-        - You gain 1 extra life as a bonus!
-        8. The deck starts shuffled. If all cards are drawn, the deck reshuffles automatically.
-        9. The game ends when you lose all your lives.\n
+           - Lose 1 life.
+           - All unbanked points are lost.
+           - Your streak resets to 0.
+        6. Drawing a Joker:
+           - Gain 1 extra life as a bonus!
+        7. When the deck runs out, it reshuffles automatically.
+        8. The game ends when you lose all your lives.
+
+        Tips:
+        - Bank your points strategically to avoid losing them!
+        - Build streaks for higher rewards.
+
         Good luck and enjoy the game!
         """
         return rules
@@ -83,7 +98,7 @@ class HigherOrLower:
         return points_lost
     
     def correct(self):
-        points = 1 + self.streak*2
+        points = 3 + self.streak*2
         self.unbanked_points += points
         self.streak += 1
         return points
