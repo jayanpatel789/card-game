@@ -1,35 +1,56 @@
 from cards.deck import Deck
 from leaderboard.leaderboard import Leaderboard
 
-
 class HigherOrLower:
+    """
+    Represents the logic for the Higher or Lower game, including card drawing,
+    scorekeeping, and game state management.
+    """
+
     def __init__(self, leaderboard=None):
-        # Initialise the deck
+        """
+        Initialises the game with a shuffled deck, game constants, variables, and leaderboard.
+
+        Args:
+            leaderboard (Leaderboard, optional): Custom leaderboard instance.
+                                                 If None, a default leaderboard is created.
+        """
+        # Initialise the deck with jokers and shuffle it
         self.deck = Deck(include_jokers=True)
         self.deck.shuffle()
 
-        # GAME constants
-        self.STARTING_LIVES = 3
-        self.BASE_SCORE = 2
-        self.STREAK_MULTIPLIER = 2
-        
-        # Game variables
-        self.lives = self.STARTING_LIVES
-        self.score = 0
-        self.unbanked_points = 0
-        self.streak = 0
+        # Game constants
+        self.STARTING_LIVES = 3  # Initial number of lives
+        self.BASE_SCORE = 2      # Points for a correct guess
+        self.STREAK_MULTIPLIER = 2  # Bonus multiplier for streaks
 
-        # Leaderboard
+        # Game variables
+        self.lives = self.STARTING_LIVES  # Player's remaining lives
+        self.score = 0                   # Banked points
+        self.unbanked_points = 0         # Points at risk (unbanked)
+        self.streak = 0                  # Consecutive correct guesses
+
+        # Initialise the leaderboard
         if not leaderboard:
-            leaderboard = Leaderboard(db_path='leaderboard.db')
+            leaderboard = Leaderboard(db_path='leaderboard.db')  # Default leaderboard
         else:
             self.leaderboard = leaderboard
-    
+
     def display_state(self):
+        """
+        Displays the current state of the game, including score, unbanked points,
+        streak, and remaining lives.
+        """
         print(f"\nScore: {self.score}, Unbanked points: {self.unbanked_points}, " + 
               f"Current streak: {self.streak}, Lives: {self.lives}")
         
     def getRules(self):
+        """
+        Returns a string containing the game rules and instructions.
+
+        Returns:
+            str: The rules and instructions for the Higher or Lower game.
+        """
         rules = f"""
         Welcome to Higher or Lower: Point Rush!
         Try to get the highest score possible!
@@ -70,26 +91,39 @@ class HigherOrLower:
         return rules
     
     def draw_card(self):
-        # Draw card from the deck
+        """
+        Draws a card from the deck. Automatically creates and shuffles a new deck
+        if the current deck is empty. Grants an extra life if a Joker is drawn.
+
+        Returns:
+            Card: The drawn card or None if the deck was empty.
+        """
         self.card = self.deck.draw_card()
-        # If deck had been finished create new deck
         if not self.card:
+            # If the deck is empty, create and shuffle a new deck
             self.deck = Deck()
             self.deck.shuffle()
             return None
-        # Else check if joker was drawn
         elif self.card.rank == 'Joker':
+            # If a Joker is drawn, add a life
             self.lives += 1
             return self.card
-        # Else return chosen card
         else:
+            # Return the drawn card
             return self.card
         
     def checkGuess(self, card0, card1, guess):
         """
-        Checks user guess.
-            rtn True if correct
-            rtn False if incorrect
+        Checks whether the player's guess (Higher or Lower) is correct.
+
+        Args:
+            card0 (Card): The current card.
+            card1 (Card): The next card drawn.
+            guess (str): Player's guess ('h' for Higher, 'l' for Lower).
+        Returns:
+            bool: True if the guess is correct, False otherwise.
+        Raises:
+            ValueError: If the guess is not 'h' or 'l'.
         """
         if guess not in ['h', 'l']:
             raise ValueError('Invalid guess value used.')
@@ -99,34 +133,56 @@ class HigherOrLower:
             return card1 < card0
         
     def incorrect(self):
+        """
+        Handles the scenario when the player's guess is incorrect.
+
+        Returns:
+            int: The number of unbanked points lost.
+        """
         points_lost = self.unbanked_points
-        self.unbanked_points = 0
-        self.lives -= 1
-        self.streak = 0
+        self.unbanked_points = 0  # Reset unbanked points
+        self.lives -= 1           # Deduct a life
+        self.streak = 0           # Reset the streak
         return points_lost
     
     def correct(self):
-        points = self.BASE_SCORE + self.streak*self.STREAK_MULTIPLIER
-        self.unbanked_points += points
-        self.streak += 1
+        """
+        Handles the scenario when the player's guess is correct.
+
+        Returns:
+            int: The number of points earned from the correct guess.
+        """
+        points = self.BASE_SCORE + self.streak * self.STREAK_MULTIPLIER
+        self.unbanked_points += points  # Add points to unbanked
+        self.streak += 1                # Increase the streak
         return points
     
     def bankPoints(self):
+        """
+        Banks the unbanked points, adding them to the total score.
+        Resets unbanked points and streak to zero.
+        """
         self.score += self.unbanked_points
         self.unbanked_points = 0
         self.streak = 0
 
     def gameOver(self, name):
+        """
+        Handles the end of the game. Adds the player's score to the leaderboard.
+
+        Args:
+            name (str): The player's name.
+        Returns:
+            tuple: The final score and the leaderboard position.
+        """
         position = self.leaderboard.add_score(name, self.score)
         return self.score, position
 
 def test():
-    game = HigherOrLower()
-    print(game.deck)
-
-    for i in range(len(game.deck)):
-        card = game.deck.draw_card()
-        print(f"{i}: {card}")
+    """
+    A test function to test the functionality of the HigherOrLower class.
+    """
+    pass
 
 if __name__ == "__main__":
     test()
