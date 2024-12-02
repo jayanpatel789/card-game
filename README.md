@@ -3,6 +3,9 @@
 
 Welcome to **Higher or Lower: Point Rush**, a card game built in Python where players guess if the next card will be higher or lower. Build streaks, bank points strategically, and aim for the leaderboard!
 
+<img src="./imgs/Home-screen.png" alt="Home Screen" width="400"/>
+<img src="./imgs/gameplay.png" alt="Gameplay Screen" width="400"/>
+
 ## Features
 - **Gameplay**:
   - Guess if the next card is higher or lower.
@@ -96,6 +99,8 @@ Below is an overview of the project structure:
 - **`leaderboard/`**: Handles the leaderboard functionality and database operations.
   - `leaderboard.py`: Manages leaderboard storage, retrieval, and updates using SQLite.
 
+- **`imgs/`**: Screenshots of gameplay for readme
+
 - **`.gitignore`**: Specifies files and directories to ignore in version control.
 
 - **`environment.yml`**: Conda environment file listing dependencies and setup instructions.
@@ -103,6 +108,8 @@ Below is an overview of the project structure:
 - **`leaderboard.db`**: The main SQLite database used to store leaderboard scores.
 
 - **`README.md`**: This documentation file.
+
+- **`LICENSE.txt`**: MIT License
 
 ## Leaderboard
 - Scores are stored in `leaderboard.db` (SQLite).
