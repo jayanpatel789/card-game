@@ -24,7 +24,7 @@ class AppWindow(QMainWindow):
 
         # Set the window icon
         dirpath = os.path.dirname(os.path.abspath(__file__))
-        icon_path = os.path.join(dirpath, r"card-images\ace_of_hearts.png")
+        icon_path = os.path.join(dirpath, r"card-images\joker_icon.png")
         self.setWindowIcon(QIcon(icon_path))
 
         # Create a QStackedWidget to manage multiple screens
