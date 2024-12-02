@@ -84,8 +84,9 @@ Below is an overview of the project structure:
 
 - **`gui/`**: Contains the graphical user interface components.
   - `card-images/`: Stores images of cards used in the game.
-    - https://byronknoll.blogspot.com/2011/03/vector-playing-cards.html
-    - https://pixabay.com/vectors/card-card-game-playing-card-game-7031432/
+    - Card images - https://byronknoll.blogspot.com/2011/03/vector-playing-cards.html
+    - Back of card image - https://pixabay.com/vectors/card-card-game-playing-card-game-7031432/
+    - Joker Icon - [Diamond card icons created by Elite Art - Flaticon](https://www.flaticon.com/free-icons/diamond-card) title="diamond card icons"
   - `ui/`: Holds `.ui` files for the PyQt5 GUI design.
   - `homeUI.py`: Defines the home screen functionality.
   - `leaderboardDialog.py`: Displays the leaderboard dialog.
