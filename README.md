@@ -22,12 +22,12 @@ Welcome to **Higher or Lower: Point Rush**, a card game built in Python where pl
 ## Installation
 
 ### Prerequisites
-- Python 3.9
-- [Conda](https://docs.conda.io/en/latest/)
+- Python 3.9 (issues with PyQt5 with versions >9)
+- [Conda](https://docs.conda.io/en/latest/) (recommended) or `pip` for dependency management
 
 ### Setting Up the Environment
 
-#### Using Conda
+#### Using Conda (recommended)
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/higher-or-lower.git
@@ -42,17 +42,27 @@ Welcome to **Higher or Lower: Point Rush**, a card game built in Python where pl
    conda activate higher_or_lower
    ```
 
+#### Using Pip
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/higher-or-lower.git
+   cd higher-or-lower
+   ```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
 ## How to Play
 1. Run the program:
 
-Command line interface:
-  ```bash
-   python -m cli.higherOrLower
-   ```
-
-GUI (recommended):
+   GUI (recommended):
    ```bash
    python -m gui.main
+   ```
+   Command line interface
+   ```bash
+   python -m cli.higherOrLower
    ```
 2. Choose between:
    - **Play Game**: Start a new game.
@@ -104,6 +114,8 @@ Below is an overview of the project structure:
 - **`.gitignore`**: Specifies files and directories to ignore in version control.
 
 - **`environment.yml`**: Conda environment file listing dependencies and setup instructions.
+
+- **`requirements.txt`**: Pip requirements file listing dependencies and setup instructions.
 
 - **`leaderboard.db`**: The main SQLite database used to store leaderboard scores.
 
